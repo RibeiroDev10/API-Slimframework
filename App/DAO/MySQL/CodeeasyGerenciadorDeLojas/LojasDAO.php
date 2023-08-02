@@ -35,10 +35,10 @@ class LojasDAO extends Conexao
     }
 
                         // $loja = PARÂMETROS DO MODEL 
-    public function insertLojas(LojaModel $loja) : void // void pq nao retorna nada, apenas insere
+    public function insertLojas(LojaModel $loja): void // void pq nao retorna nada, apenas insere
     {
         $stmt = $this->pdo
-                    ->prepare('INSERT INTO lojas VALUES(
+            ->prepare('INSERT INTO lojas VALUES(
                         null, 
                         :nome,
                         :telefone,

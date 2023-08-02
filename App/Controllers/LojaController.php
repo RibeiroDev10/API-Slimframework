@@ -20,18 +20,28 @@ final class LojaController
 
     public function insertLojas(Request $request, Response $response, array $args)
     {
+        // PEGANDO DADOS DO REQUEST DO USUARIO
+        $data = $request->getParsedBody();
+
         // INSTANCIANDO OS OBJETOS - MODEL, CONEXAO COM BD E QUERYS.
         $lojasDAO = new LojasDAO();
         $loja = new LojaModel();
 
         // TRABALHANDO OS DADOS NO MODELO CRIADO (LOJA MODEL)
-        $loja->setNome('');
-        $loja->setTelefone('');
-        $loja->setEndereco('');
+        // TIPA OS MÉTODOS SETTERS COMO "LojaModel" 
+        // NOS MÉTODOS SETTERS "return $this" PARA RETORNAR ELE MESMO
+        // E ASSIM CONSEGUIRMOS UTILIZAR UM MÉTODO ATRÁS DO OUTRO
+        $loja->setNome($data['nome'])
+             ->setTelefone($data['telefone'])
+             ->setEndereco($data['endereco']);
 
         // ENVIANDO OS DADOS DO MODELO PARA O DAO QUE,
         // CONTEM A CONEXÃO COM O BD E O PODER DE FAZER AS QUERYS
         $lojasDAO->insertLojas($loja);
+
+        $response = $response->withJSON([
+            'message' => 'Loja inserida com sucesso!'
+        ]);
 
         return $response;
     }
