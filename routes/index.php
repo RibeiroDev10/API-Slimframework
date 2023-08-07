@@ -1,24 +1,35 @@
 <?php
 
-use src\slimConfiguration;
-use App\Controllers\ProdutoController;
-use App\Controllers\LojaController;
+use function src\slimConfiguration;
+use function src\basicAuth;
 
-$app = new \Slim\App();
+use App\Controllers\{
+
+    ProdutoController,
+    LojaController,
+    AuthController
+};
+
+$app = new \Slim\App(slimConfiguration());
 
 // ==================================================================
 
-// LOJAS
-$app->get('/loja', LojaController::class . ':getLojas');
-$app->post('/loja', LojaController::class . ':insertLojas');
-$app->put('/loja', LojaController::class . ':updateLojas');
-$app->delete('/loja', LojaController::class . ':deleteLojas');
+$app->post('/login', AuthController::class . ':login');
 
-// PRODUTOS
-$app->get('/produto', ProdutoController::class . ':getProdutos');
-$app->post('/produto', ProdutoController::class . ':insertProdutos');
-$app->put('/produto', ProdutoController::class . ':updateProdutos');
-$app->delete('/produto', ProdutoController::class . ':deleteProdutos');
+$app->group('', function () use ($app) {
+
+    // LOJAS
+    $app->get('/loja', LojaController::class . ':getLojas');
+    $app->post('/loja', LojaController::class . ':insertLojas');
+    $app->put('/loja', LojaController::class . ':updateLojas');
+    $app->delete('/loja', LojaController::class . ':deleteLojas');
+
+    // PRODUTOS
+    $app->get('/produto', ProdutoController::class . ':getProdutos');
+    $app->post('/produto', ProdutoController::class . ':insertProdutos');
+    $app->put('/produto', ProdutoController::class . ':updateProdutos');
+    $app->delete('/produto', ProdutoController::class . ':deleteProdutos');
+})->add(basicAuth());
 
 // ==================================================================
 $app->run();
