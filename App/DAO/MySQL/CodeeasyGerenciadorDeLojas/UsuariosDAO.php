@@ -24,11 +24,12 @@ class UsuariosDAO extends Conexao
                 FROM usuarios
                 WHERE email = :email;
             ');
-        $statement->bindParam(':email', $email);
+        $statement->bindParam('email', $email);
         $statement->execute();
         $usuarios = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        if(count($usuarios) === 0)
+        if (count($usuarios) === 0) {
             return null;
+        }
         $usuario = new UsuarioModel();
         $usuario->setId($usuarios[0]['id'])
             ->setNome($usuarios[0]['nome'])
